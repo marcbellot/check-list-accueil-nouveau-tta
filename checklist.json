@@ -13,71 +13,123 @@
     {
       "groupe": "Le matin",
       "items": [
-        { "id": "harnais", "texte": "Il a mis son harnais devant moi : poches vides, contrôle visuel de l'état du harnais (sangles, anneaux, coutures)." },
-        { "id": "cuisses", "texte": "Cuisses réglées : une main passe, le poing ne passe pas. Anneau dorsal entre les omoplates." },
-        { "id": "epi", "texte": "Il porte son casque et les EPI de la tâche du jour." }
+        {
+          "id": "harnais",
+          "texte": "Il a mis son harnais devant moi : poches vides, contrôle visuel de l'état du harnais (sangles, anneaux, coutures)."
+        },
+        {
+          "id": "cuisses",
+          "texte": "Cuisses réglées : une main passe, le poing ne passe pas. Anneau dorsal entre les omoplates."
+        },
+        {
+          "id": "epi",
+          "texte": "Il porte son casque et les EPI de la tâche du jour."
+        }
       ]
     },
     {
       "groupe": "Au brief",
       "items": [
-        { "id": "fiche", "texte": "Il m'a dit ce qu'il a lu sur la fiche : adresse, commentaire TTA, sécurité temporaire." }
+        {
+          "id": "fiche",
+          "texte": "Il m'a dit ce qu'il a lu sur la fiche : adresse, commentaire TTA, sécurité temporaire."
+        }
       ]
     },
     {
       "groupe": "Sur le toit",
       "items": [
-        { "id": "demande", "texte": "Il m'a demandé le contrôle de l'ancrage avant chaque accrochage." },
-        { "id": "ancrage", "texte": "J'ai contrôlé chaque ancrage avant qu'il s'attache." },
-        { "id": "photo", "texte": "La photo de mise en sécurité a été prise avant les travaux." }
+        {
+          "id": "demande",
+          "texte": "Il m'a demandé le contrôle de l'ancrage avant chaque accrochage."
+        },
+        {
+          "id": "ancrage",
+          "texte": "J'ai contrôlé chaque ancrage avant qu'il s'attache."
+        },
+        {
+          "id": "photo",
+          "texte": "La photo de mise en sécurité a été prise avant les travaux."
+        }
       ]
     }
   ],
   "onglets": [
-    { "id": "J1", "titre": "Jour 1 sur chantier", "quotidien": true },
-    { "id": "J2", "titre": "Jour 2 sur chantier", "quotidien": true },
-    { "id": "J3", "titre": "Jour 3 sur chantier", "quotidien": true },
-    { "id": "J4", "titre": "Jour 4 sur chantier", "quotidien": true },
     {
-      "id": "J5", "titre": "Jour 5 sur chantier", "quotidien": true,
+      "id": "J1",
+      "titre": "Jour 1 sur chantier",
+      "quotidien": true
+    },
+    {
+      "id": "J2",
+      "titre": "Jour 2 sur chantier",
+      "quotidien": true
+    },
+    {
+      "id": "J3",
+      "titre": "Jour 3 sur chantier",
+      "quotidien": true
+    },
+    {
+      "id": "J4",
+      "titre": "Jour 4 sur chantier",
+      "quotidien": true
+    },
+    {
+      "id": "J5",
+      "titre": "Jour 5 sur chantier",
+      "quotidien": true,
       "groupes": [
         {
           "groupe": "Fin de semaine : 5 minutes à part",
           "items": [
-            { "id": "refl", "texte": "Je lui ai demandé : « Qu'est-ce qui a été facile ? Difficile ? Que ferais-tu autrement ? »" }
+            {
+              "id": "refl",
+              "texte": "Je lui ai demandé : « Qu'est-ce qui a été facile ? Difficile ? Que ferais-tu autrement ? »"
+            }
           ]
         }
       ]
     },
     {
-      "id": "J+7", "titre": "J+7 : au brief",
+      "id": "J+7",
+      "titre": "J+7 : au brief",
       "groupes": [
         {
           "groupe": "Question de rappel",
           "items": [
-            { "id": "q", "texte": "Je lui ai posé la question : « Avant de t'attacher, que fais-tu ? »" },
-            { "id": "ok", "texte": "Il a répondu sans aide : je fais contrôler l'ancrage par le référent." }
+            {
+              "id": "q",
+              "texte": "Je lui ai posé la question : « Avant de t'attacher, que fais-tu ? »"
+            },
+            {
+              "id": "ok",
+              "texte": "Il a répondu sans aide : je fais contrôler l'ancrage par le référent."
+            }
           ]
         }
       ]
     },
     {
-      "id": "J+30", "titre": "J+30 : observation sur chantier",
+      "id": "J+30",
+      "titre": "J+30 : observation sur chantier",
       "groupes": [
         {
           "groupe": "Observation",
           "items": [
-            { "id": "obs", "texte": "Je l'ai observé sur un chantier avec la grille « Attendus métier de TTA »." },
-            { "id": "send", "texte": "J'ai transmis mes notes au responsable d'agence." }
+            {
+              "id": "obs",
+              "texte": "Je l'ai observé sur un chantier avec la grille « Attendus métier de TTA »."
+            },
+            {
+              "id": "send",
+              "texte": "J'ai transmis mes notes au responsable d'agence."
+            }
           ]
         }
       ]
     }
   ],
-  "ancrage": {
-    "note": "Ancrage fixe ou temporaire, conforme (norme NF EN 795).",
-    "aCompleter": "[À COMPLÉTER : critères de contrôle définis par l'agence]"
-  },
   "stop": [
     "son harnais est abîmé ou la date de vérification est dépassée ;",
     "il n'est pas accroché, ou il s'est attaché à un ancrage que tu n'as pas contrôlé ;",
@@ -86,6 +138,9 @@
     "le chantier concerne de l'amiante."
   ],
   "notesAide": "Un fait daté par point. Exemple : « 12/11 : s'est attaché sans demander le contrôle de l'ancrage, rappel fait. »",
-  "signatures": ["Le TTA référent", "Le responsable d'agence"],
+  "signatures": [
+    "Le TTA référent",
+    "Le responsable d'agence"
+  ],
   "sources": "Kit référent ATTILA Bourg-en-Bresse du 03/11/2026 ; OPPBTP, guide harnais et mémo EPI couverture (2021) ; plan de prévention de la fiche de suivi chantier."
 }

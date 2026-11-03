@@ -110,10 +110,6 @@ footer { margin-top: 28px; font-size: 12px; color: var(--muted) }
     <div class="tabs" role="tablist" id="tabs"></div>
     <div id="day" role="tabpanel"></div>
 
-    <h2>Ce que tu contrôles sur un ancrage</h2>
-    <p class="note" id="ancrage-note"></p>
-    <p class="todo" id="ancrage-todo"></p>
-
     <h2>Tu arrêtes tout si</h2>
     <ul class="stop" id="stop"></ul>
 
@@ -161,9 +157,6 @@ function build(data) {
   $("titre").textContent = data.titre;
   $("regle-titre").textContent = data.regle.titre;
   $("regle-texte").textContent = data.regle.texte;
-  $("ancrage-note").textContent = data.ancrage.note;
-  $("ancrage-todo").textContent = data.ancrage.aCompleter;
-  $("ancrage-todo").hidden = !data.ancrage.aCompleter;
   $("stop").innerHTML = data.stop.map((s) => "<li>" + esc(s) + "</li>").join("");
   $("notes-aide").textContent = data.notesAide;
   $("footer").textContent = "Les cases cochées restent sur ce téléphone. Version " + data.version + ". Sources : " + data.sources;
