@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Check-list référent TTA</title>
+<style>
+/* Layout : une colonne type carnet de chantier ; vue impression = récapitulatif A4 pour le dossier */
+:root {
+  --red: #B70E0C; --grey: #58666D; --rose: #CA6E6E; --cream: #FEF4EC;
+  --bg: #FFFFFF; --fg: #1B1F21; --muted: #58666D; --line: #DCE1E3; --surface: #FEF4EC;
+  --ok: #2E7D4F; --todo: #FFF5C2; --todo-fg: #6B4E00;
+  --font: Tahoma, Verdana, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --bg: #16191B; --fg: #ECEFF0; --muted: #A7B0B4; --line: #2E3538; --surface: #22282B;
+  --red: #E0403D; --ok: #5CC48A; --todo: #3A3216; --todo-fg: #F2D77A; color-scheme: dark } }
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+html { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px) }
+body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 16px; line-height: 1.45; margin: 0 }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: #B70E0C }
+.wrap { max-width: 640px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 40px }
+header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: #B70E0C; color: #fff; margin: 0 calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding: 12px max(16px, env(safe-area-inset-right, 0px)) 12px max(16px, env(safe-area-inset-left, 0px)) }
+header .eyebrow { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; opacity: .85 }
+header h1 { margin: 2px 0 8px; font-size: 20px; text-wrap: balance }
+.bar { height: 8px; background: rgba(255,255,255,.3); border-radius: 4px; overflow: hidden }
+.bar span { display: block; height: 100%; width: 0; background: #fff; transition: width .2s }
+.count { font-size: 12px; margin-top: 4px; font-variant-numeric: tabular-nums }
+.who { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0 }
+.who label { font-size: 12px; color: var(--muted); display: grid; gap: 4px }
+input[type=text], input[type=date], textarea { font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px; width: 100%; min-width: 0 }
+.rule { background: var(--red); color: #fff; border-radius: 8px; padding: 14px; margin: 8px 0 18px }
+.rule b { display: block; font-size: 17px; margin-bottom: 4px }
+h2 { font-size: 15px; color: var(--red); margin: 22px 0 8px; padding-bottom: 4px; border-bottom: 2px solid var(--red) }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px }
+.tabs button { font: inherit; font-weight: bold; border: 1.5px solid var(--grey); background: var(--bg); color: var(--fg); border-radius: 6px; padding: 8px 12px; min-width: 52px; cursor: pointer; font-variant-numeric: tabular-nums }
+.tabs button[aria-selected=true] { background: var(--grey); color: #fff }
+.tabs button.done::after { content: " ✓" }
+.group { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 14px 0 4px }
+.item { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--line); cursor: pointer }
+.item input { width: 24px; height: 24px; flex: 0 0 24px; margin: 0; accent-color: var(--ok) }
+.item span { min-width: 0 }
+.item input:checked + span { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--ok) }
+.stop { background: var(--surface); border-radius: 8px; padding: 12px 14px 12px 32px; margin: 0 }
+.stop li { margin: 4px 0 }
+.todo { background: var(--todo); color: var(--todo-fg); border-radius: 6px; padding: 8px 10px; font-size: 13px; font-weight: bold }
+.note { font-size: 13px; color: var(--muted) }
+textarea { min-height: 90px; resize: vertical }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; align-items: center }
+.actions button { font: inherit; border-radius: 6px; padding: 10px 14px; cursor: pointer; border: 1.5px solid var(--grey); background: var(--bg); color: var(--fg) }
+.actions .primary { background: #B70E0C; border-color: #B70E0C; color: #fff; font-weight: bold }
+.actions .danger { border-color: var(--red); color: var(--red) }
+.confirm { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 14px }
+.msg { font-size: 13px; color: var(--red); width: 100% }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--rose); outline-offset: 2px }
+footer { margin-top: 28px; font-size: 12px; color: var(--muted) }
+.error { margin: 24px 0; padding: 14px; border: 2px solid var(--red); border-radius: 8px }
+#print { display: none }
+@media (max-width: 420px) { .who { grid-template-columns: 1fr } }
+@media (prefers-reduced-motion: reduce) { .bar span { transition: none } }
+
+/* Récapitulatif imprimé / PDF */
+@page { size: A4; margin: 12mm 14mm 12mm }
+@media print {
+  :root { color-scheme: light }
+  body { background: #fff; color: #000; font-size: 10pt }
+  body::before, .wrap { display: none !important }
+  #print { display: block; font-family: Tahoma, Verdana, sans-serif }
+  #print .top { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2pt solid #B70E0C; padding-bottom: 3mm; margin-bottom: 3mm }
+  #print .top img { height: 11mm; width: auto }
+  #print .top .ref { font-size: 8pt; color: #58666D; text-align: right }
+  #print h1 { font-size: 15pt; color: #fff; background: #B70E0C; margin: 0 0 3mm; padding: 2mm 3mm; -webkit-print-color-adjust: exact; print-color-adjust: exact }
+  #print h2 { font-size: 11pt; color: #B70E0C; border-bottom: 1pt solid #B70E0C; margin: 3mm 0 1.5mm; padding-bottom: 1mm; break-after: avoid }
+  #print .ident { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2mm; font-size: 9.5pt; margin-bottom: 2mm }
+  #print .ident b { color: #58666D }
+  #print table { width: 100%; border-collapse: collapse; font-size: 9pt; break-inside: auto }
+  #print tr { break-inside: avoid }
+  #print th { background: #58666D; color: #fff; text-align: left; padding: 1.2mm 2mm; -webkit-print-color-adjust: exact; print-color-adjust: exact }
+  #print td { border: 0.5pt solid #C9CFD2; padding: 1mm 2mm; vertical-align: top }
+  #print .c { text-align: center; width: 10mm; font-size: 11pt }
+  #print .grp td { background: #FEF4EC; font-weight: bold; color: #58666D; -webkit-print-color-adjust: exact; print-color-adjust: exact }
+  #print .notes { border: 0.5pt solid #C9CFD2; min-height: 14mm; padding: 2mm; white-space: pre-wrap; font-size: 9.5pt }
+  #print .sign { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; margin-top: 5mm; break-inside: avoid }
+  #print .sign div { border: 0.5pt solid #C9CFD2; height: 20mm; padding: 2mm; font-size: 9pt; color: #58666D }
+  #print .foot { margin-top: 4mm; font-size: 7.5pt; color: #58666D; font-style: italic }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="eyebrow">ATTILA</div>
+    <h1 id="titre">Chargement…</h1>
+    <div class="bar" aria-hidden="true"><span id="bar"></span></div>
+    <div class="count" id="count"></div>
+  </header>
+
+  <div id="app" hidden>
+    <div class="who">
+      <label for="nom">Intérimaire<input type="text" id="nom" placeholder="Prénom Nom" autocomplete="off"></label>
+      <label for="arrivee">Arrivé le<input type="date" id="arrivee"></label>
+    </div>
+
+    <div class="rule"><b id="regle-titre"></b><span id="regle-texte"></span></div>
+
+    <h2 id="tab-title"></h2>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div id="day" role="tabpanel"></div>
+
+    <h2>Ce que tu contrôles sur un ancrage</h2>
+    <p class="note" id="ancrage-note"></p>
+    <p class="todo" id="ancrage-todo"></p>
+
+    <h2>Tu arrêtes tout si</h2>
+    <ul class="stop" id="stop"></ul>
+
+    <h2>Mes notes</h2>
+    <p class="note" id="notes-aide"></p>
+    <textarea id="notes" aria-label="Notes du référent"></textarea>
+
+    <div class="actions">
+      <button type="button" class="primary" id="pdf">Exporter en PDF pour le dossier</button>
+      <button type="button" class="danger" id="reset">Nouvel intérimaire</button>
+      <div class="confirm" id="confirm" hidden>
+        <span>Tout effacer ?</span>
+        <button type="button" class="danger" id="yes">Effacer</button>
+        <button type="button" id="no">Annuler</button>
+      </div>
+      <p class="msg" id="msg" hidden></p>
+    </div>
+    <p class="note">Le PDF s'obtient avec « Enregistrer au format PDF » dans la fenêtre d'impression du téléphone ou de l'ordinateur.</p>
+
+    <footer id="footer"></footer>
+  </div>
+
+  <div class="error" id="error" hidden>
+    Le contenu de la check-list n'a pas pu être chargé (fichier checklist.json). Ouvre la page depuis son lien GitHub Pages, pas depuis un fichier sur l'ordinateur.
+  </div>
+</div>
+
+<section id="print" aria-hidden="true"></section>
+
+<script>
+const KEY = "attila-kit-referent-v2";
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { state = {}; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+let DATA, TABS, current;
+
+function build(data) {
+  DATA = data;
+  TABS = data.onglets.map((o) => ({ id: o.id, titre: o.titre, groupes: (o.quotidien ? data.quotidien : []).concat(o.groupes || []) }));
+  current = TABS.some((t) => t.id === state._tab) ? state._tab : TABS[0].id;
+  $("eyebrow").textContent = data.agence + " · " + data.sousTitre;
+  $("titre").textContent = data.titre;
+  $("regle-titre").textContent = data.regle.titre;
+  $("regle-texte").textContent = data.regle.texte;
+  $("ancrage-note").textContent = data.ancrage.note;
+  $("ancrage-todo").textContent = data.ancrage.aCompleter;
+  $("ancrage-todo").hidden = !data.ancrage.aCompleter;
+  $("stop").innerHTML = data.stop.map((s) => "<li>" + esc(s) + "</li>").join("");
+  $("notes-aide").textContent = data.notesAide;
+  $("footer").textContent = "Les cases cochées restent sur ce téléphone. Version " + data.version + ". Sources : " + data.sources;
+  ["nom", "arrivee", "notes"].forEach((id) => { const el = $(id); el.value = state[id] || ""; el.oninput = () => { state[id] = el.value; save(); }; });
+  $("app").hidden = false;
+  renderTabs(); renderDay(); progress();
+}
+
+const keys = (t) => t.groupes.flatMap((g) => g.items.map((i) => t.id + "-" + i.id));
+const tabDone = (t) => keys(t).every((k) => state[k]);
+
+function renderTabs() {
+  const tabs = $("tabs"); tabs.innerHTML = "";
+  TABS.forEach((t) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = t.id; b.setAttribute("role", "tab");
+    b.setAttribute("aria-selected", t.id === current);
+    if (tabDone(t)) b.classList.add("done");
+    b.onclick = () => { current = t.id; state._tab = t.id; save(); renderTabs(); renderDay(); };
+    tabs.appendChild(b);
+  });
+}
+function renderDay() {
+  const t = TABS.find((x) => x.id === current), day = $("day");
+  $("tab-title").textContent = t.titre;
+  day.innerHTML = "";
+  t.groupes.forEach((g) => {
+    const h = document.createElement("div"); h.className = "group"; h.textContent = g.groupe; day.appendChild(h);
+    g.items.forEach((it) => {
+      const id = t.id + "-" + it.id;
+      const l = document.createElement("label"); l.className = "item";
+      const i = document.createElement("input"); i.type = "checkbox"; i.id = id; i.checked = !!state[id];
+      i.onchange = () => { state[id] = i.checked; save(); renderTabs(); progress(); };
+      const s = document.createElement("span"); s.textContent = it.texte;
+      l.append(i, s); day.appendChild(l);
+    });
+  });
+}
+function progress() {
+  const all = TABS.flatMap(keys), done = all.filter((k) => state[k]).length;
+  $("count").textContent = done + (done > 1 ? " points cochés" : " point coché") + " sur " + all.length;
+  $("bar").style.width = (100 * done / all.length) + "%";
+}
+
+function fr(d) { if (!d) return "…"; const [y, m, j] = d.split("-"); return j + "/" + m + "/" + y; }
+function buildPrint() {
+  const all = TABS.flatMap(keys), done = all.filter((k) => state[k]).length;
+  const today = new Date().toLocaleDateString("fr-FR");
+  const daily = DATA.onglets.filter((o) => o.quotidien).map((o) => o.id);
+  const mark = (k) => (state[k] ? "☑" : "☐");
+  let mat = "<table><thead><tr><th>Chaque jour de la première semaine</th>" + daily.map((d) => '<th class="c">' + d + "</th>").join("") + "</tr></thead><tbody>";
+  DATA.quotidien.forEach((g) => {
+    mat += '<tr class="grp"><td colspan="' + (daily.length + 1) + '">' + esc(g.groupe) + "</td></tr>";
+    g.items.forEach((it) => { mat += "<tr><td>" + esc(it.texte) + "</td>" + daily.map((d) => '<td class="c">' + mark(d + "-" + it.id) + "</td>").join("") + "</tr>"; });
+  });
+  mat += "</tbody></table>";
+  let rows = "";
+  DATA.onglets.forEach((o) => (o.groupes || []).forEach((g) => g.items.forEach((it) => {
+    rows += "<tr><td>" + esc(o.id) + "</td><td>" + esc(g.groupe) + " · " + esc(it.texte) + '</td><td class="c">' + mark(o.id + "-" + it.id) + "</td></tr>";
+  })));
+  const autres = "<table><thead><tr><th>Quand</th><th>Point contrôlé</th><th class=\"c\">Fait</th></tr></thead><tbody>" + rows + "</tbody></table>";
+  $("print").innerHTML =
+    '<div class="top"><img src="logo-attila.png" alt="ATTILA"><div class="ref">' + esc(DATA.agence) + " · " + esc(DATA.societe) + "<br>Exporté le " + today + "</div></div>" +
+    "<h1>Suivi référent : " + esc(DATA.titre.toLowerCase()) + "</h1>" +
+    '<div class="ident"><div><b>Intérimaire :</b> ' + esc(state.nom || "………………") + "</div><div><b>Arrivé le :</b> " + fr(state.arrivee) + "</div><div><b>Référent :</b> " + esc(DATA.referent) + "</div></div>" +
+    "<div><b>Points cochés :</b> " + done + " sur " + all.length + "</div>" +
+    "<h2>Première semaine</h2>" + mat + "<h2>Fin de semaine, J+7 et J+30</h2>" + autres +
+    "<h2>Notes du référent</h2><div class=\"notes\">" + esc(state.notes || "Aucune note.") + "</div>" +
+    '<div class="sign">' + DATA.signatures.map((s) => "<div>" + esc(s) + "<br>Nom, date, signature</div>").join("") + "</div>" +
+    '<div class="foot">Document à classer dans le dossier de l\'intérimaire. Version ' + esc(DATA.version) + ". Sources : " + esc(DATA.sources) + "</div>";
+}
+
+$("pdf").onclick = () => {
+  const msg = $("msg");
+  if (!state.nom) { msg.textContent = "Indique le nom de l'intérimaire avant d'exporter."; msg.hidden = false; $("nom").focus(); return; }
+  msg.hidden = true;
+  buildPrint();
+  const img = $("print").querySelector("img");
+  const go = () => window.print();
+  if (img && !img.complete) { img.onload = go; img.onerror = go; } else go();
+};
+window.addEventListener("beforeprint", () => { if (DATA) buildPrint(); });
+
+const confirmBox = $("confirm"), reset = $("reset");
+reset.onclick = () => { confirmBox.hidden = false; reset.hidden = true; };
+$("no").onclick = () => { confirmBox.hidden = true; reset.hidden = false; };
+$("yes").onclick = () => {
+  state = {}; save(); current = TABS[0].id;
+  ["nom", "arrivee", "notes"].forEach((id) => { $(id).value = ""; });
+  confirmBox.hidden = true; reset.hidden = false; renderTabs(); renderDay(); progress();
+};
+
+fetch("checklist.json", { cache: "no-cache" })
+  .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(build)
+  .catch(() => { $("titre").textContent = "Check-list indisponible"; $("error").hidden = false; });
+</script>
+</body>
+</html>
