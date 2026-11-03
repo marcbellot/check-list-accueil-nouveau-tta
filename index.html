@@ -133,7 +133,9 @@ footer { margin-top: 28px; font-size: 12px; color: var(--muted) }
   </div>
 
   <div class="error" id="error" hidden>
-    Le contenu de la check-list n'a pas pu être chargé (fichier checklist.json). Ouvre la page depuis son lien GitHub Pages, pas depuis un fichier sur l'ordinateur.
+    <b id="error-titre">La check-list ne s'affiche pas.</b>
+    <p id="error-texte"></p>
+    <p class="note" id="error-detail"></p>
   </div>
 </div>
 
@@ -155,11 +157,11 @@ function build(data) {
   current = TABS.some((t) => t.id === state._tab) ? state._tab : TABS[0].id;
   $("eyebrow").textContent = data.agence + " · " + data.sousTitre;
   $("titre").textContent = data.titre;
-  $("regle-titre").textContent = data.regle.titre;
-  $("regle-texte").textContent = data.regle.texte;
-  $("stop").innerHTML = data.stop.map((s) => "<li>" + esc(s) + "</li>").join("");
-  $("notes-aide").textContent = data.notesAide;
-  $("footer").textContent = "Les cases cochées restent sur ce téléphone. Version " + data.version + ". Sources : " + data.sources;
+  $("regle-titre").textContent = data.regle?.titre || "";
+  $("regle-texte").textContent = data.regle?.texte || "";
+  $("stop").innerHTML = (data.stop || []).map((s) => "<li>" + esc(s) + "</li>").join("");
+  $("notes-aide").textContent = data.notesAide || "";
+  $("footer").textContent = "Les cases cochées restent sur ce téléphone. Version " + (data.version || "?") + ". Sources : " + (data.sources || "");
   ["nom", "arrivee", "notes"].forEach((id) => { const el = $(id); el.value = state[id] || ""; el.oninput = () => { state[id] = el.value; save(); }; });
   $("app").hidden = false;
   renderTabs(); renderDay(); progress();
@@ -249,10 +251,34 @@ $("yes").onclick = () => {
   confirmBox.hidden = true; reset.hidden = false; renderTabs(); renderDay(); progress();
 };
 
-fetch("checklist.json", { cache: "no-cache" })
-  .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
-  .then(build)
-  .catch(() => { $("titre").textContent = "Check-list indisponible"; $("error").hidden = false; });
+function fail(texte, detail) {
+  $("titre").textContent = "Check-list indisponible";
+  $("app").hidden = true;
+  $("error-texte").textContent = texte;
+  $("error-detail").textContent = "Détail technique : " + detail;
+  $("error").hidden = false;
+}
+const url = new URL("checklist.json", location.href);
+url.searchParams.set("t", Date.now());
+if (location.protocol === "file:") {
+  fail("La page est ouverte comme un fichier sur l'ordinateur. Ouvre-la depuis son lien GitHub Pages.", "protocole file:");
+} else {
+  fetch(url, { cache: "no-store" })
+    .then((r) => {
+      if (!r.ok) throw { etape: "chargement", detail: "checklist.json introuvable (erreur " + r.status + ") à l'adresse " + url.pathname + ". Vérifie qu'il est dans le même dossier que index.html, avec ce nom exact." };
+      return r.text();
+    })
+    .then((txt) => {
+      let data;
+      try { data = JSON.parse(txt); } catch (e) { throw { etape: "lecture", detail: "checklist.json n'est pas un JSON valide : " + e.message }; }
+      try { build(data); } catch (e) { throw { etape: "affichage", detail: e.message + ". index.html et checklist.json ne sont peut-être pas de la même version." }; }
+    })
+    .catch((e) => fail(
+      e.etape === "affichage" ? "Le fichier de contenu a été trouvé, mais la page n'a pas pu l'afficher." :
+      e.etape === "lecture" ? "Le fichier de contenu contient une erreur de syntaxe." :
+      "Le fichier de contenu checklist.json n'a pas été trouvé.",
+      e.detail || String(e)));
+}
 </script>
 </body>
 </html>
