@@ -1,0 +1,217 @@
+{
+  "version": "2026-11-03",
+  "agence": "ATTILA Bourg-en-Bresse",
+  "societe": "Solutions Toitures",
+  "titre": "Les 30 premiers jours du nouveau TTA",
+  "sousTitre": "Kit référent",
+  "referent": "David",
+  "regle": {
+    "titre": "Avant chaque accrochage, tu contrôles l'ancrage.",
+    "texte": "Chaque ancrage, à chaque fois, tant que sa formation hauteur n'est pas faite. Il ne pose jamais seul un ancrage ou une ligne de vie."
+  },
+  "kit": {
+    "id": "Kit",
+    "titre": "Kit référent : tes consignes",
+    "intro": "Le nouveau TTA a vu le harnais, les EPI et la fiche de suivi le jour de son arrivée. Il n'a pas encore sa formation hauteur. Tu le sécurises, tu contrôles ses ancrages, et tu lui fais refaire les bons gestes.",
+    "sections": [
+      {
+        "titre": "Ce que tu montres, en disant pourquoi",
+        "liste": [
+          "Chaque ancrage que tu contrôles avant qu'il s'attache, et ce que tu regardes.",
+          "Comment tu lis la fiche de suivi au brief : l'adresse, le commentaire TTA, la sécurité temporaire.",
+          "La photo de mise en sécurité avant les travaux."
+        ]
+      },
+      {
+        "titre": "Ce que tu lui fais faire, toi à côté",
+        "liste": [
+          "Mettre son harnais devant toi, chaque matin la première semaine.",
+          "Te demander le contrôle de l'ancrage avant chaque accrochage. S'il ne demande pas, tu l'arrêtes et tu lui rappelles.",
+          "Te dire, au brief, ce qu'il a lu sur la fiche.",
+          "Porter son casque toujours, et choisir ses EPI pour la tâche du jour."
+        ]
+      },
+      {
+        "titre": "Ce que tu regardes",
+        "tableau": {
+          "entetes": [
+            "Point",
+            "Erreur typique"
+          ],
+          "lignes": [
+            [
+              "Sangles de cuisses",
+              "Trop lâches pour être à l'aise : le poing passe dessous."
+            ],
+            [
+              "Poches",
+              "Téléphone ou outils gardés dans les poches sous le harnais."
+            ],
+            [
+              "Ancrage",
+              "Il s'attache sans te demander de contrôler l'ancrage, ou change de point d'ancrage sans te le dire."
+            ],
+            [
+              "Casque et EPI de la tâche",
+              "Casque retiré sur le toit. Pas de lunettes ni de masque pour découper ou meuler."
+            ],
+            [
+              "Fiche de suivi",
+              "Il ne lit pas le commentaire TTA et oublie du matériel."
+            ]
+          ]
+        }
+      },
+      {
+        "titre": "Comment tu corriges",
+        "texte": "Tu dis ce que tu as vu. Tu dis ce qui est attendu. Il refait devant toi. Tu dis aussi ce qu'il fait bien, avec des mots précis."
+      },
+      {
+        "titre": "Quand tu arrêtes tout",
+        "stop": true
+      },
+      {
+        "titre": "Après, à part",
+        "texte": "En fin de semaine, 5 minutes : « Qu'est-ce qui a été facile ? Difficile ? Que ferais-tu autrement ? »"
+      },
+      {
+        "titre": "Ce que tu notes et à qui",
+        "texte": "Tu coches les onglets J1 à J+30 au fil des jours. À J+7, au brief : une question de rappel. À J+30 : tu l'observes sur un chantier avec la grille « Attendus métier de TTA ». Tu notes un fait daté par point dans « Mes notes », tu exportes le PDF et tu le transmets au responsable d'agence."
+      }
+    ]
+  },
+  "quotidien": [
+    {
+      "groupe": "Le matin",
+      "items": [
+        {
+          "id": "harnais",
+          "texte": "Il a mis son harnais devant moi : poches vides, contrôle visuel de l'état du harnais (sangles, anneaux, coutures)."
+        },
+        {
+          "id": "cuisses",
+          "texte": "Cuisses réglées : une main passe, le poing ne passe pas. Anneau dorsal entre les omoplates."
+        },
+        {
+          "id": "epi",
+          "texte": "Il porte son casque et les EPI de la tâche du jour."
+        }
+      ]
+    },
+    {
+      "groupe": "Au brief",
+      "items": [
+        {
+          "id": "fiche",
+          "texte": "Il m'a dit ce qu'il a lu sur la fiche : adresse, commentaire TTA, sécurité temporaire."
+        }
+      ]
+    },
+    {
+      "groupe": "Sur le toit",
+      "items": [
+        {
+          "id": "demande",
+          "texte": "Il m'a demandé le contrôle de l'ancrage avant chaque accrochage."
+        },
+        {
+          "id": "ancrage",
+          "texte": "J'ai contrôlé chaque ancrage avant qu'il s'attache."
+        },
+        {
+          "id": "photo",
+          "texte": "La photo de mise en sécurité a été prise avant les travaux."
+        }
+      ]
+    }
+  ],
+  "onglets": [
+    {
+      "id": "J1",
+      "titre": "Jour 1 sur chantier",
+      "quotidien": true
+    },
+    {
+      "id": "J2",
+      "titre": "Jour 2 sur chantier",
+      "quotidien": true
+    },
+    {
+      "id": "J3",
+      "titre": "Jour 3 sur chantier",
+      "quotidien": true
+    },
+    {
+      "id": "J4",
+      "titre": "Jour 4 sur chantier",
+      "quotidien": true
+    },
+    {
+      "id": "J5",
+      "titre": "Jour 5 sur chantier",
+      "quotidien": true,
+      "groupes": [
+        {
+          "groupe": "Fin de semaine : 5 minutes à part",
+          "items": [
+            {
+              "id": "refl",
+              "texte": "Je lui ai demandé : « Qu'est-ce qui a été facile ? Difficile ? Que ferais-tu autrement ? »"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "J+7",
+      "titre": "J+7 : au brief",
+      "groupes": [
+        {
+          "groupe": "Question de rappel",
+          "items": [
+            {
+              "id": "q",
+              "texte": "Je lui ai posé la question : « Avant de t'attacher, que fais-tu ? »"
+            },
+            {
+              "id": "ok",
+              "texte": "Il a répondu sans aide : je fais contrôler l'ancrage par le référent."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "J+30",
+      "titre": "J+30 : observation sur chantier",
+      "groupes": [
+        {
+          "groupe": "Observation",
+          "items": [
+            {
+              "id": "obs",
+              "texte": "Je l'ai observé sur un chantier avec la grille « Attendus métier de TTA »."
+            },
+            {
+              "id": "send",
+              "texte": "J'ai transmis mes notes au responsable d'agence."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stop": [
+    "son harnais est abîmé ou la date de vérification est dépassée ;",
+    "il n'est pas accroché, ou il s'est attaché à un ancrage que tu n'as pas contrôlé ;",
+    "il n'a pas compris la consigne ;",
+    "un risque imprévu apparaît ;",
+    "le chantier concerne de l'amiante."
+  ],
+  "notesAide": "Un fait daté par point. Exemple : « 12/11 : s'est attaché sans demander le contrôle de l'ancrage, rappel fait. »",
+  "signatures": [
+    "Le TTA référent",
+    "Le responsable d'agence"
+  ],
+  "sources": "Kit référent ATTILA Bourg-en-Bresse du 03/11/2026 ; OPPBTP, guide harnais et mémo EPI couverture (2021) ; plan de prévention de la fiche de suivi chantier."
+}

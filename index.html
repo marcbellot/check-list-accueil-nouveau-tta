@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#B70E0C">
 <title>Check-list référent TTA</title>
 <style>
 /* Layout : une colonne type carnet de chantier ; vue impression = récapitulatif A4 pour le dossier */
@@ -13,12 +14,14 @@
   --font: Tahoma, Verdana, "Segoe UI", sans-serif;
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) { :root {
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #16191B; --fg: #ECEFF0; --muted: #A7B0B4; --line: #2E3538; --surface: #22282B;
   --red: #E0403D; --ok: #5CC48A; --todo: #3A3216; --todo-fg: #F2D77A; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #16191B; --fg: #ECEFF0; --muted: #A7B0B4; --line: #2E3538; --surface: #22282B;
+  --red: #E0403D; --ok: #5CC48A; --todo: #3A3216; --todo-fg: #F2D77A; color-scheme: dark }
 * { box-sizing: border-box }
 [hidden] { display: none !important }
-html { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px) }
 body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 16px; line-height: 1.45; margin: 0 }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: #B70E0C }
 .wrap { max-width: 640px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 40px }
@@ -58,38 +61,50 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px
 footer { margin-top: 28px; font-size: 12px; color: var(--muted) }
 .error { margin: 24px 0; padding: 14px; border: 2px solid var(--red); border-radius: 8px }
 #print { display: none }
+.kit-intro { background: var(--surface); border-radius: 8px; padding: 12px 14px; margin: 6px 0 4px }
+.kit h3 { font-size: 15px; color: var(--fg); margin: 18px 0 6px; display: flex; gap: 8px; align-items: baseline }
+.kit h3 .n { color: #fff; background: var(--red); border-radius: 50%; min-width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; flex: 0 0 22px }
+.kit p { margin: 0 0 6px }
+.kit ul { margin: 0; padding-left: 22px }
+.kit li { margin: 4px 0 }
+.kit .tw { overflow-x: auto }
+.kit table { border-collapse: collapse; width: 100%; font-size: 14px }
+.kit th { text-align: left; background: var(--grey); color: #fff; padding: 6px 8px }
+.kit td { border-bottom: 1px solid var(--line); padding: 7px 8px; vertical-align: top }
+.kit td:first-child { font-weight: bold; white-space: nowrap }
+.tabs button.kit-tab { border-color: var(--red); color: var(--red) }
+.tabs button.kit-tab[aria-selected=true] { background: var(--red); border-color: var(--red); color: #fff }
 @media (max-width: 420px) { .who { grid-template-columns: 1fr } }
 @media (prefers-reduced-motion: reduce) { .bar span { transition: none } }
 
-/* Récapitulatif imprimé / PDF */
-@page { size: A4; margin: 12mm 14mm 12mm }
+</style>
+<style>
+/* Récapitulatif A4 pour le dossier du TTA */
+@page { size: A4; margin: 14mm }
 @media print {
-  :root { color-scheme: light }
-  body { background: #fff; color: #000; font-size: 10pt }
+  body { background: #fff; color: #000; font-size: 11pt }
   body::before, .wrap { display: none !important }
-  #print { display: block; font-family: Tahoma, Verdana, sans-serif }
-  #print .top { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2pt solid #B70E0C; padding-bottom: 3mm; margin-bottom: 3mm }
-  #print .top img { height: 11mm; width: auto }
-  #print .top .ref { font-size: 8pt; color: #58666D; text-align: right }
-  #print h1 { font-size: 15pt; color: #fff; background: #B70E0C; margin: 0 0 3mm; padding: 2mm 3mm; -webkit-print-color-adjust: exact; print-color-adjust: exact }
-  #print h2 { font-size: 11pt; color: #B70E0C; border-bottom: 1pt solid #B70E0C; margin: 3mm 0 1.5mm; padding-bottom: 1mm; break-after: avoid }
-  #print .ident { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2mm; font-size: 9.5pt; margin-bottom: 2mm }
-  #print .ident b { color: #58666D }
-  #print table { width: 100%; border-collapse: collapse; font-size: 9pt; break-inside: auto }
-  #print tr { break-inside: avoid }
-  #print th { background: #58666D; color: #fff; text-align: left; padding: 1.2mm 2mm; -webkit-print-color-adjust: exact; print-color-adjust: exact }
-  #print td { border: 0.5pt solid #C9CFD2; padding: 1mm 2mm; vertical-align: top }
-  #print .c { text-align: center; width: 10mm; font-size: 11pt }
-  #print .grp td { background: #FEF4EC; font-weight: bold; color: #58666D; -webkit-print-color-adjust: exact; print-color-adjust: exact }
-  #print .notes { border: 0.5pt solid #C9CFD2; min-height: 14mm; padding: 2mm; white-space: pre-wrap; font-size: 9.5pt }
-  #print .sign { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; margin-top: 5mm; break-inside: avoid }
-  #print .sign div { border: 0.5pt solid #C9CFD2; height: 20mm; padding: 2mm; font-size: 9pt; color: #58666D }
-  #print .foot { margin-top: 4mm; font-size: 7.5pt; color: #58666D; font-style: italic }
+  #print { display: block !important; font-family: Tahoma, Verdana, sans-serif }
+  #print .top { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #B70E0C; padding-bottom: 8px }
+  #print .top img { height: 40px }
+  #print .ref { text-align: right; font-size: 9pt; color: #58666D }
+  #print h1 { font-size: 15pt; color: #B70E0C; margin: 12px 0 8px }
+  #print h2 { font-size: 12pt; color: #B70E0C; border-bottom: 1px solid #B70E0C; margin: 14px 0 6px; padding-bottom: 2px }
+  #print .ident { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 6px }
+  #print table { width: 100%; border-collapse: collapse; font-size: 9.5pt; page-break-inside: auto }
+  #print tr { page-break-inside: avoid }
+  #print th { background: #58666D; color: #fff; text-align: left; padding: 4px 6px; -webkit-print-color-adjust: exact; print-color-adjust: exact }
+  #print td { border-bottom: 1px solid #DCE1E3; padding: 4px 6px; vertical-align: top }
+  #print .c { text-align: center; width: 36px }
+  #print .grp td { background: #FEF4EC; font-weight: bold; -webkit-print-color-adjust: exact; print-color-adjust: exact }
+  #print .notes { white-space: pre-wrap; border: 1px solid #DCE1E3; padding: 8px; min-height: 60px }
+  #print .sign { display: flex; gap: 20px; margin-top: 18px; page-break-inside: avoid }
+  #print .sign div { flex: 1; border: 1px solid #58666D; height: 80px; padding: 6px; font-size: 9pt }
+  #print .foot { margin-top: 12px; font-size: 8pt; color: #58666D }
 }
 </style>
 </head>
 <body>
-
 <div class="wrap">
   <header>
     <div class="eyebrow" id="eyebrow">ATTILA</div>
@@ -100,7 +115,7 @@ footer { margin-top: 28px; font-size: 12px; color: var(--muted) }
 
   <div id="app" hidden>
     <div class="who">
-      <label for="nom">Intérimaire<input type="text" id="nom" placeholder="Prénom Nom" autocomplete="off"></label>
+      <label for="nom">Nouveau TTA<input type="text" id="nom" placeholder="Prénom Nom" autocomplete="off"></label>
       <label for="arrivee">Arrivé le<input type="date" id="arrivee"></label>
     </div>
 
@@ -110,16 +125,18 @@ footer { margin-top: 28px; font-size: 12px; color: var(--muted) }
     <div class="tabs" role="tablist" id="tabs"></div>
     <div id="day" role="tabpanel"></div>
 
-    <h2>Tu arrêtes tout si</h2>
-    <ul class="stop" id="stop"></ul>
+    <div id="stop-block">
+      <h2>Tu arrêtes tout si</h2>
+      <ul class="stop" id="stop"></ul>
+    </div>
 
     <h2>Mes notes</h2>
     <p class="note" id="notes-aide"></p>
     <textarea id="notes" aria-label="Notes du référent"></textarea>
 
     <div class="actions">
-      <button type="button" class="primary" id="pdf">Exporter en PDF pour le dossier</button>
-      <button type="button" class="danger" id="reset">Nouvel intérimaire</button>
+      <button type="button" class="primary" id="pdf">Exporter le PDF</button>
+      <button type="button" class="danger" id="reset">Nouveau TTA suivant</button>
       <div class="confirm" id="confirm" hidden>
         <span>Tout effacer ?</span>
         <button type="button" class="danger" id="yes">Effacer</button>
@@ -127,7 +144,7 @@ footer { margin-top: 28px; font-size: 12px; color: var(--muted) }
       </div>
       <p class="msg" id="msg" hidden></p>
     </div>
-    <p class="note">Le PDF s'obtient avec « Enregistrer au format PDF » dans la fenêtre d'impression du téléphone ou de l'ordinateur.</p>
+    <p class="note">L'export PDF ouvre l'impression du téléphone : choisis « Enregistrer en PDF ».</p>
 
     <footer id="footer"></footer>
   </div>
@@ -139,7 +156,7 @@ footer { margin-top: 28px; font-size: 12px; color: var(--muted) }
   </div>
 </div>
 
-<section id="print" aria-hidden="true"></section>
+<div id="print"></div>
 
 <script>
 const KEY = "attila-kit-referent-v2";
@@ -154,6 +171,7 @@ let DATA, TABS, current;
 function build(data) {
   DATA = data;
   TABS = data.onglets.map((o) => ({ id: o.id, titre: o.titre, groupes: (o.quotidien ? data.quotidien : []).concat(o.groupes || []) }));
+  if (data.kit) TABS.unshift({ id: data.kit.id || "Kit", titre: data.kit.titre, groupes: [], kit: data.kit });
   current = TABS.some((t) => t.id === state._tab) ? state._tab : TABS[0].id;
   $("eyebrow").textContent = data.agence + " · " + data.sousTitre;
   $("titre").textContent = data.titre;
@@ -176,7 +194,8 @@ function renderTabs() {
     const b = document.createElement("button");
     b.type = "button"; b.textContent = t.id; b.setAttribute("role", "tab");
     b.setAttribute("aria-selected", t.id === current);
-    if (tabDone(t)) b.classList.add("done");
+    if (t.kit) b.classList.add("kit-tab");
+    else if (tabDone(t)) b.classList.add("done");
     b.onclick = () => { current = t.id; state._tab = t.id; save(); renderTabs(); renderDay(); };
     tabs.appendChild(b);
   });
@@ -184,7 +203,9 @@ function renderTabs() {
 function renderDay() {
   const t = TABS.find((x) => x.id === current), day = $("day");
   $("tab-title").textContent = t.titre;
+  $("stop-block").hidden = !!t.kit;
   day.innerHTML = "";
+  if (t.kit) { day.innerHTML = renderKit(t.kit); return; }
   t.groupes.forEach((g) => {
     const h = document.createElement("div"); h.className = "group"; h.textContent = g.groupe; day.appendChild(h);
     g.items.forEach((it) => {
@@ -196,6 +217,19 @@ function renderDay() {
       l.append(i, s); day.appendChild(l);
     });
   });
+}
+function renderKit(k) {
+  let h = '<div class="kit">';
+  if (k.intro) h += '<p class="kit-intro">' + esc(k.intro) + "</p>";
+  (k.sections || []).forEach((sec, i) => {
+    h += '<h3><span class="n">' + (i + 1) + "</span><span>" + esc(sec.titre) + "</span></h3>";
+    if (sec.texte) h += "<p>" + esc(sec.texte) + "</p>";
+    const liste = sec.stop ? DATA.stop : sec.liste;
+    if (liste) h += "<ul>" + liste.map((x) => "<li>" + esc(x) + "</li>").join("") + "</ul>";
+    if (sec.tableau) h += '<div class="tw"><table><thead><tr>' + sec.tableau.entetes.map((x) => "<th>" + esc(x) + "</th>").join("") + "</tr></thead><tbody>" +
+      sec.tableau.lignes.map((r) => "<tr>" + r.map((c) => "<td>" + esc(c) + "</td>").join("") + "</tr>").join("") + "</tbody></table></div>";
+  });
+  return h + "</div>";
 }
 function progress() {
   const all = TABS.flatMap(keys), done = all.filter((k) => state[k]).length;
@@ -222,25 +256,15 @@ function buildPrint() {
   const autres = "<table><thead><tr><th>Quand</th><th>Point contrôlé</th><th class=\"c\">Fait</th></tr></thead><tbody>" + rows + "</tbody></table>";
   $("print").innerHTML =
     '<div class="top"><img src="logo-attila.png" alt="ATTILA"><div class="ref">' + esc(DATA.agence) + " · " + esc(DATA.societe) + "<br>Exporté le " + today + "</div></div>" +
-    "<h1>Suivi référent : " + esc(DATA.titre.toLowerCase()) + "</h1>" +
-    '<div class="ident"><div><b>Intérimaire :</b> ' + esc(state.nom || "………………") + "</div><div><b>Arrivé le :</b> " + fr(state.arrivee) + "</div><div><b>Référent :</b> " + esc(DATA.referent) + "</div></div>" +
+    "<h1>Suivi référent : " + esc(DATA.titre) + "</h1>" +
+    '<div class="ident"><div><b>Nouveau TTA :</b> ' + esc(state.nom || "………………") + "</div><div><b>Arrivé le :</b> " + fr(state.arrivee) + "</div><div><b>Référent :</b> " + esc(DATA.referent) + "</div></div>" +
     "<div><b>Points cochés :</b> " + done + " sur " + all.length + "</div>" +
     "<h2>Première semaine</h2>" + mat + "<h2>Fin de semaine, J+7 et J+30</h2>" + autres +
     "<h2>Notes du référent</h2><div class=\"notes\">" + esc(state.notes || "Aucune note.") + "</div>" +
     '<div class="sign">' + DATA.signatures.map((s) => "<div>" + esc(s) + "<br>Nom, date, signature</div>").join("") + "</div>" +
-    '<div class="foot">Document à classer dans le dossier de l\'intérimaire. Version ' + esc(DATA.version) + ". Sources : " + esc(DATA.sources) + "</div>";
+    '<div class="foot">Document à classer dans le dossier du nouveau TTA. Version ' + esc(DATA.version) + ". Sources : " + esc(DATA.sources) + "</div>";
 }
 
-$("pdf").onclick = () => {
-  const msg = $("msg");
-  if (!state.nom) { msg.textContent = "Indique le nom de l'intérimaire avant d'exporter."; msg.hidden = false; $("nom").focus(); return; }
-  msg.hidden = true;
-  buildPrint();
-  const img = $("print").querySelector("img");
-  const go = () => window.print();
-  if (img && !img.complete) { img.onload = go; img.onerror = go; } else go();
-};
-window.addEventListener("beforeprint", () => { if (DATA) buildPrint(); });
 
 const confirmBox = $("confirm"), reset = $("reset");
 reset.onclick = () => { confirmBox.hidden = false; reset.hidden = true; };
@@ -258,27 +282,12 @@ function fail(texte, detail) {
   $("error-detail").textContent = "Détail technique : " + detail;
   $("error").hidden = false;
 }
-const url = new URL("checklist.json", location.href);
-url.searchParams.set("t", Date.now());
-if (location.protocol === "file:") {
-  fail("La page est ouverte comme un fichier sur l'ordinateur. Ouvre-la depuis son lien GitHub Pages.", "protocole file:");
-} else {
-  fetch(url, { cache: "no-store" })
-    .then((r) => {
-      if (!r.ok) throw { etape: "chargement", detail: "checklist.json introuvable (erreur " + r.status + ") à l'adresse " + url.pathname + ". Vérifie qu'il est dans le même dossier que index.html, avec ce nom exact." };
-      return r.text();
-    })
-    .then((txt) => {
-      let data;
-      try { data = JSON.parse(txt); } catch (e) { throw { etape: "lecture", detail: "checklist.json n'est pas un JSON valide : " + e.message }; }
-      try { build(data); } catch (e) { throw { etape: "affichage", detail: e.message + ". index.html et checklist.json ne sont peut-être pas de la même version." }; }
-    })
-    .catch((e) => fail(
-      e.etape === "affichage" ? "Le fichier de contenu a été trouvé, mais la page n'a pas pu l'afficher." :
-      e.etape === "lecture" ? "Le fichier de contenu contient une erreur de syntaxe." :
-      "Le fichier de contenu checklist.json n'a pas été trouvé.",
-      e.detail || String(e)));
-}
+fetch("data.json", { cache: "no-cache" })
+  .then((r) => { if (!r.ok) throw new Error("data.json : HTTP " + r.status); return r.json(); })
+  .then((d) => { try { build(d); } catch (e) { fail("La check-list n'a pas pu s'afficher.", e.message); } })
+  .catch((e) => fail("Le fichier de contenu n'a pas pu être chargé. Vérifie ta connexion puis recharge la page.", e.message));
+
+$("pdf").onclick = () => { buildPrint(); window.print(); };
 </script>
 </body>
 </html>
